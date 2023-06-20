@@ -14,6 +14,7 @@
     * [2. 文件权限问题](#2-文件权限问题)
     * [3. 启动hadoop 报错](#3-启动hadoop-报错)
     * [4. 查看ubuntu 系统版本](#4-查看ubuntu-系统版本)
+    * [5. 部署hadoop服务路径文件配置](#5-部署hadoop服务路径文件配置)
 <!-- TOC -->
 
 前言
@@ -304,3 +305,60 @@ Description:    Ubuntu 22.04.2 LTS
 Release:        22.04
 Codename:       jammy
 ```
+
+### 5. 部署hadoop服务路径文件配置
+
+修改core-site
+```shell
+vim etc/hadoop/core-site.xml
+```
+
+```xml
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://localhost:9000</value>
+  </property>
+
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/home/tianjian/projects/tmp/hdfs/dfs/tmp</value>
+  </property>
+  <!-- 当前用户全设置成root -->
+  <property>
+    <name>hadoop.http.staticuser.user</name>
+    <value>root</value>
+  </property>
+</configuration>
+```
+
+修改hdfs-site
+```shell
+vim etc/hadoop/hdfs-site.xml
+```
+```xml
+<configuration>
+  <property>
+     <name>dfs.replication</name>
+     <value>1</value>
+  </property>
+  <property>
+     <name>dfs.namenode.name.dir</name>
+     <value>/home/tianjian/projects/tmp/hdfs/dfs/name</value>
+  </property>
+  <property>
+     <name>dfs.datanode.data.dir</name>
+     <value>/home/tianjian/projects/tmp/hdfs/dfs/data</value>
+  </property>
+  <property><name>dfs.permission</name><value>false</value></property>
+<property>
+    <name>dfs.client.block.write.replace-datanode-on-failure.policy</name>
+    <value>NEVER</value>
+</property>
+<property><name>dfs.permissions.enabled</name><value>false</value></property>
+<property><name>dfs.webhdfs.enabled</name><value>true</value></property>
+</configuration>
+```
+
+1. 启动前先删除之前缓存的tmp路径下的数据
+2. 格式化数据库 `./bin/hdfs namenode -format`
