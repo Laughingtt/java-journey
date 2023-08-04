@@ -1,3 +1,6 @@
 [submodule "big_data_doc/God-Of-BigData"]
 	path = big_data_doc/God-Of-BigData
 	url = https://github.com/wangzhiwubigdata/God-Of-BigData.git
+[submodule "basic_usage/Java"]
+	path = basic_usage/Java
+	url = https://github.com/DuHouAn/Java.git
