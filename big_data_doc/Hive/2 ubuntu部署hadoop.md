@@ -230,6 +230,30 @@ hadoop@fzqs-computer:/usr/local/had oop$ cat ./output/*
 
 ```
 
+# 五、启动 Hadoop
+
+```shell
+cd /usr/local/hadoop
+bin/hdfs namenode -format       # namenode 格式化
+sbin/start-dfs.sh               # 开启守护进程
+jps                             # 判断是否启动成功
+```
+
+NameNode、DataNode和SecondaryNameNode
+
+![img.png](image/dfs-jps.png)
+
+运行 WordCount 实例：
+
+```shell
+bin/hdfs dfs -mkdir -p /user/hadoop     # 创建HDFS目录
+bin/hdfs dfs -mkdir input
+bin/hdfs dfs -put etc/hadoop/*.xml input#将配置文件作为输入
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar grep input output 'dfs[a-z.]+'
+bin/hdfs dfs -cat output/*    
+```
+
+
 # 六、遇到问题
 
 ### 1. NameNode无法启动

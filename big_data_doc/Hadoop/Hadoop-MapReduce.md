@@ -280,7 +280,6 @@ com.heibaiying.WordCountApp \
 /wordcount/input.txt /wordcount/output/WordCountApp
 ```
 
-作业完成后查看 HDFS 上生成目录：
 
 ```shell
 # 查看目录

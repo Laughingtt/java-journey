@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/data
+  tomcat:
+    uri-encoding: utf-8
+
+shdata-api-config:
+  api-url: https://data/call
+  version: V1.0
+  realUser: 1
+  scene: 1
+  server:
+    single-marital-status:
+      secureId:
+      serviceKey:
+      sm4Key:
+    double-marital-status:
+      secureId:
+      serviceKey:
+      sm4Key:
