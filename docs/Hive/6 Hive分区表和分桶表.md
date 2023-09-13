@@ -162,6 +162,75 @@ SELECT * FROM page_view WHERE dt='2009-02-25';
 ```
 
 
+### 分区表
+```hiveql
+-- 创建表
+CREATE TABLE IF NOT EXISTS sale_detail (
+shop_name     STRING,
+customer_id   STRING,
+total_price   DOUBLE
+)
+PARTITIONED BY (sale_date STRING, region STRING);
+
+-- 插入分区数据
+INSERT INTO sale_detail PARTITION (sale_date, region)
+VALUES
+('Shop A1', 'C001', 100.0, '2023-06-01', 'North2'),
+('Shop A2', 'C001', 100.0, '2023-06-01', 'North2'),
+('Shop A3', 'C001', 100.0, '2023-06-01', 'North2');
+
+```
+按日期分区，实际在hdfs中存储的是一个个文件夹
+
+![img.png](image/img.png)
+
+### 分桶表
+```hiveql
+
+
+-- 创建表
+CREATE TABLE IF NOT EXISTS student
+(
+    id    STRING,
+    score STRING
+)
+    CLUSTERED BY (id) SORTED BY (score asc) into 4 buckets;
+
+insert into student
+VALUES ('C012', '10'),
+       ('C023', '70'),
+       ('C034', '20'),
+       ('C045', '11'),
+       ('C056', '30');
+
+```
+分桶表在hdfs中存储的一个个文件，设置4个buckets，会有4个文件
+![img_1.png](image/img_1.png)
+
+
+分区分桶表
+```hiveql
+-- 创建表
+CREATE TABLE IF NOT EXISTS sale_seg
+(
+    shop_name   STRING,
+    customer_id STRING,
+    total_price DOUBLE
+)
+    PARTITIONED BY (sale_date STRING, region STRING)
+    clustered by (customer_id) sorted by (customer_id asc) into 4 buckets;
+
+-- 插入分区数据
+INSERT INTO sale_seg PARTITION (sale_date, region)
+VALUES ('Shop A1', 'C001', 100.0, '2023-06-01', 'North2'),
+       ('Shop A2', 'C002', 100.0, '2023-06-02', 'North2'),
+       ('Shop A3', 'C003', 100.0, '2023-06-03', 'North'),
+       ('Shop A4', 'C004', 100.0, '2023-06-04', 'North'),
+       ('Shop A5', 'C005', 100.0, '2023-06-05', 'North'),
+       ('Shop A6', 'C006', 100.0, '2023-06-06', 'North'),
+       ('Shop A7', 'C007', 100.0, '2023-06-07', 'North2');
+```
+
 
 ## 参考资料
 

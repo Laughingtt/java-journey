@@ -240,6 +240,9 @@ VALUES
 ```
 以上示例代码创建了一个名为"sale_detail"的表，并指定了分区键为"sale_date"和"region"。然后使用INSERT INTO语句插入了10条示例数据，每条数据都指定了相应的分区键值。
 
+partition 动态分配
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
 
 -- 设置并行度为4
 SET hive.exec.parallel=true;
@@ -247,3 +250,4 @@ SET hive.exec.parallel.thread.number=4;
 
 -- 执行查询语句
 SELECT * FROM my_table;
+

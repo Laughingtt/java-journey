@@ -241,7 +241,7 @@ jps                             # 判断是否启动成功
 
 NameNode、DataNode和SecondaryNameNode
 
-![img.png](image/dfs-jps.png)
+![img.png](../Hive/image/dfs-jps.png)
 
 运行 WordCount 实例：
 

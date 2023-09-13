@@ -2,7 +2,7 @@ HDFS
 ====
 HDFS（Hadoop Distributed File System）是Hadoop分布式计算框架中使用的分布式文件系统。它的架构和组成部分包括：
 
-![hdfs架构图.png](image/hdfs架构图.png)
+![hdfs架构图.png](../Hive/image/hdfs架构图.png)
 
 ## NameNode（名称节点）
 NameNode是HDFS的主节点，负责管理文件系统的命名空间和元数据。它维护文件和目录的层次结构，记录文件块的位置信息，并处理客户端的读写请求。NameNode还负责决定文件块的复制策略、处理数据节点的心跳和块报告等。
