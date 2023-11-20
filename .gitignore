@@ -3,3 +3,9 @@ out
 gen
 logs
 .mvn
+/target
+/**/target/
+.flattened-pom.xml
+*.iml
+/target/
+/**/logs/
