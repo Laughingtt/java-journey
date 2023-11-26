@@ -1,4 +1,4 @@
-package map;
+package grammar.map;
 
 public class StaticFlowExample {
     // 静态成员变量的初始化

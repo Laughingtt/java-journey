@@ -1,4 +1,4 @@
-package map;
+package grammar.map;
 
 import java.util.HashMap;
 import java.util.Map;

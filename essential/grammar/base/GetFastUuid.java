@@ -1,4 +1,4 @@
-package base;
+package grammar.base;
 
 import com.fasterxml.uuid.Generators;
 
