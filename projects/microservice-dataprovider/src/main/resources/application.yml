@@ -1,0 +1,54 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2B8&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true
+    username: test
+    password: test
+    hikari:
+      connection-timeout: 10000
+      validation-timeout: 3000
+      idle-timeout: 50000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      read-only: false
+    task:
+      execution:
+        pool:
+          core-size: 2        # 异步任务执行线程池的核心线程数
+          max-size: 10        # 异步任务执行线程池的最大线程数
+          queue-capacity: 30  # 异步任务执行线程池的队列容量
+          thread-name-prefix: async-task-  # 异步任务执行线程池的线程前缀
+
+
+mybatis-plus:
+  type-aliases-package: com.laughing.microservice.**.domain
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+
+## actuator监控
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  metrics:
+#    web:
+#      server:
+#        request:
+#          autotime:
+#            enabled: true
+
+crypto-config:
+  version: V1.0
+  serviceKey: 121212
+  sm4Key: 93c84a50070bba26
+
+APP_LOG_HOME: C:/Users/TianJian/Desktop/Projects/java-journey/projects/microservice-dataprovider/logs

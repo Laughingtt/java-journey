@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laughing.microservice.dataprovider.dao.OrdersDao">
+
+
+    <resultMap id="OrdersMap" type="com.laughing.microservice.dataprovider.entity.Orders">
+        <result property="OrderID" column="OrderID"/>
+        <result property="CustomerID" column="CustomerID"/>
+        <result property="ProductID" column="ProductID"/>
+        <result property="Quantity" column="Quantity"/>
+        <result property="Price" column="Price"/>
+        <result property="OrderDate" column="OrderDate"/>
+        <result property="OrderName" column="OrderName"/>
+    </resultMap>
+
+<!--    <select id="selectAmount" parameterType="integer" resultType="integer">-->
+<!--        select amount-->
+<!--        from Transactions-->
+<!--        where id = #{id};-->
+<!--    </select>-->
+
+<!--    <sql id="Base_Column_List">-->
+<!--        id-->
+<!--        , amount, trans_date-->
+<!--    </sql>-->
+
+    <select id="selectById" parameterType="Integer" resultMap="OrdersMap">
+        select
+        OrderID,
+        CustomerID,
+        ProductID,
+        Quantity,
+        Price,
+        OrderDate,
+        OrderName
+        from Orders
+        where CustomerID= #{CustomerID}
+    </select>
+
+<!--    <select id="selectAll" resultMap="VerifyTripartiteAgreementMap">-->
+<!--        select ZJHM,-->
+<!--               XM,-->
+<!--               TYXYM,-->
+<!--               JNSJ,-->
+<!--               YW_UPDATE_TIME-->
+<!--        from ADS_WSQY_JYFA-->
+<!--    </select>-->
+</mapper>
