@@ -1,12 +1,11 @@
-package udf;
+package grammar.udf;
 
-
-import com.sdgft.udf.Hello;
-import com.sdgft.udf.NullTrans;
+import com.sdgft.udf.Sha256Crypto;
+import com.sdgft.udf.Sm3Crypto;
 
 class test{
     public static void main(String[] args) {
-        NullTrans nullTrans = new NullTrans();
+        Sm3Crypto nullTrans = new Sm3Crypto();
 
         System.out.println(nullTrans.evaluate("121"));
     }

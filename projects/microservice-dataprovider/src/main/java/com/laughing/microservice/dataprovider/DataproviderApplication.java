@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
- * @author zhongjie
+ * @author
  * @date 2023/10/23
  */
 @Slf4j
