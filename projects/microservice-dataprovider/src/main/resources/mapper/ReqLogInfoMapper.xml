@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laughing.microservice.dataprovider.dao.ReqLogInfoDao">
+
+    <insert id="insert" parameterType="com.laughing.microservice.dataprovider.entity.ReqLogInfo">
+        INSERT INTO req_log_info (trans_id, req_path, req_start_tsp, req_end_tsp, query_start_tsp, query_end_tsp, req_time, info)
+        VALUES (#{trans_id}, #{req_path}, #{req_start_tsp}, #{req_end_tsp}, #{query_start_tsp}, #{query_end_tsp}, #{req_time},
+                #{info})
+    </insert>
+
+    <resultMap id="ReqLogInfoMap" type="com.laughing.microservice.dataprovider.entity.ReqLogInfo">
+        <result property="trans_id" column="trans_id"/>
+        <result property="req_start_tsp" column="req_start_tsp"/>
+        <result property="req_end_tsp" column="req_end_tsp"/>
+        <result property="query_start_tsp" column="query_start_tsp"/>
+        <result property="query_end_tsp" column="query_end_tsp"/>
+    </resultMap>
+
+    <select id="selectObjs" parameterType="integer" resultMap="ReqLogInfoMap">
+        select trans_id,
+               req_start_tsp,
+               req_end_tsp,
+               query_start_tsp,
+               query_end_tsp
+        from req_log_info
+        where created_at >= Now() - INTERVAL #{times} SECOND;
+    </select>
+
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property resource="bootstrap.yml"/>
+
+    <!--    <property name="LOG_HOME" value="D:/logs"/>-->
+    <property name="FILE_SIZE" value="50MB"/>
+    <property name="MAX_HISTORY" value="100"/>
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name"/>
+    <springProperty name="LOG_HOME" scope="context" source="log.home"/>
+
+    <!-- stdout appender定义 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>STDOUT</level>
+        </filter>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-5level [%X{hostName}][%thread][%X{traceId}] %logger{20} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志文件 appender定义 -->
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/${APP_NAME}/${APP_NAME}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${FILE_SIZE}</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-5level [%X{hostName}][%thread][%X{traceId}] %logger{20} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+    1. 按时间（小时）、大小（1G）进行日志分片 OK
+    2. 日志文件名字的格式 OK
+    3. requestId-> traceId OK
+    4. logger{n}显示长度 OK
+    5. 日志文件的目录结构，能适应开发和docker环境
+    6. 使用系统自带归档文件压缩 OK
+    -->
+
+    <!-- ca_service日志 -->
+    <appender name="caServiceAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/${APP_NAME}/service.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/ca_service-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${FILE_SIZE}</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-5level [%X{hostName}][%thread][%X{traceId}] %logger{20} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- error日志 -->
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <File>${LOG_HOME}/${APP_NAME}/error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/error-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${FILE_SIZE}</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d %-5level [%X{hostName}][%thread][%X{traceId}] %logger{20} %line - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 异步的appender -->
+    <appender name="asyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="fileAppender"/>
+        <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
+        <queueSize>10000</queueSize>
+        <!-- 设置丢弃DEBUG、TRACE、INFO日志的阀值，不丢失 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 设置队列入队时非阻塞，当队列满时会直接丢弃日志，但是对性能提升极大 -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="asyncCaServiceAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="caServiceAppender"/>
+        <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
+        <queueSize>10000</queueSize>
+        <!-- 设置丢弃DEBUG、TRACE、INFO日志的阀值，不丢失 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 设置队列入队时非阻塞，当队列满时会直接丢弃日志，但是对性能提升极大 -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="asyncErrorServiceAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="errorAppender"/>
+        <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
+        <queueSize>10000</queueSize>
+        <!-- 设置丢弃DEBUG、TRACE、INFO日志的阀值，不丢失 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 设置队列入队时非阻塞，当队列满时会直接丢弃日志，但是对性能提升极大 -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+
+    <logger name="com.laughing.microservice.foreign.core.common.advice.GlobalExceptionHandler" additivity="true">
+        <level value="ERROR"/>
+        <appender-ref ref="errorAppender"/>
+    </logger>
+
+    <logger name="com.sheca" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="asyncCaServiceAppender"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
+

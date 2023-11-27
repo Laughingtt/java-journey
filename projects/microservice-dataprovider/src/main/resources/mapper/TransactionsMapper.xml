@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laughing.microservice.dataprovider.dao.TransactionsDao">
+
+
+    <resultMap id="TransactionsMap" type="com.laughing.microservice.dataprovider.entity.Transactions">
+        <result property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="trans_date" column="trans_date"/>
+    </resultMap>
+
+    <select id="selectAmount" parameterType="integer" resultType="integer">
+        select amount
+        from Transactions
+        where id = #{id};
+    </select>
+
+    <sql id="Base_Column_List">
+        id
+        , amount, trans_date
+    </sql>
+
+    <select id="selectById" parameterType="integer" resultMap="TransactionsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from Transactions
+        where id= #{id}
+    </select>
+
+    <select id="selectAll" resultMap="TransactionsMap">
+        select id,
+               amount,
+               trans_date
+        from Transactions
+    </select>
+</mapper>

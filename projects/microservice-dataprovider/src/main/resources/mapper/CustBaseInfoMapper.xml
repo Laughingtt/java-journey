@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laughing.microservice.dataprovider.mapper.CustBaseInfoMapper">
+    <resultMap id="BaseResultMap" type="com.laughing.microservice.dataprovider.entity.CustBaseInfo">
+        <result property="custRowId" column="cust_row_id"/>
+        <result property="custName" column="cust_name"/>
+        <result property="custFlag" column="cust_flag"/>
+        <result property="custDesc" column="cust_desc"/>
+        <result property="firstLinkmanName" column="first_linkman_name"/>
+        <result property="firstLinkmanEmail" column="first_linkman_email"/>
+        <result property="firstLinkmanMobile" column="first_linkman_mobile"/>
+        <result property="firstLinkmanDept" column="first_linkman_dept"/>
+        <result property="custStatus" column="cust_status"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastEditUserName" column="last_edit_user_name"/>
+        <result property="lastEditTime" column="last_edit_time"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="industry" column="industry"/>
+        <result property="relatedEnterprise" column="related_enterprise"/>
+        <result property="saleModel" column="sale_model"/>
+        <result property="district" column="district"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        cust_row_id, cust_name, cust_flag, cust_desc, first_linkman_name, first_linkman_email,
+        first_linkman_mobile, first_linkman_dept, cust_status, create_user_name, create_time, last_edit_user_name,
+        last_edit_time, nick_name, industry, related_enterprise, sale_model, district
+    </sql>
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_base_info
+        where cust_row_id = #{custRowId}
+    </select>
+
+    <select id="selectshebao" parameterType="String" resultType="integer">
+        select abs(TIMESTAMPDIFF(MONTH, NOW(), jnsj)) AS month_difference
+        from (select *
+              from (select if(STR_TO_DATE(CONCAT(JNSJ, '01'), '%Y%m%d') >
+                              (select DATE_SUB(NOW(), INTERVAL 60 MONTH) as before_60_month
+                               from dwd_zgcb
+                               group by ZJHM, JNSJ
+                  limit 1), STR_TO_DATE(CONCAT(JNSJ, '01'), '%Y%m%d'),
+                      null) as jnsj
+                    from dwd_zgcb
+                    group by ZJHM, JNSJ
+                    order by jnsj) as t
+              where
+              jnsj = #{jnsj}
+                  limit 1) as t2
+    </select>
+
+
+    <resultMap id="TransactionsInfoMap" type="com.laughing.microservice.dataprovider.entity.Transactions">
+        <result property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="trans_date" column="trans_date"/>
+
+    </resultMap>
+
+    <select id="selectAmount" parameterType="integer" resultType="integer">
+        select amount from Transactions where id= #{id};
+    </select>
+</mapper>
