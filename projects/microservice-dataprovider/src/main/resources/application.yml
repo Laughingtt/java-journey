@@ -51,4 +51,4 @@ crypto-config:
   serviceKey: 121212
   sm4Key: 93c84a50070bba26
 
-APP_LOG_HOME: C:/Users/TianJian/Desktop/Projects/java-journey/projects/microservice-dataprovider/logs
+APP_LOG_HOME: D:/data/logs/microservice-dataprovider/logs

@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.laughing.microservice.common.utils.LogService;
 import com.laughing.microservice.crypto.utils.CryptoParseUtil;
 import com.laughing.microservice.dataprovider.conf.CryptoConfig;
+import com.laughing.microservice.dataprovider.conf.SetConf;
 import com.laughing.microservice.dataprovider.dao.ReqLogInfoDao;
 import com.laughing.microservice.dataprovider.dao.TransactionsDao;
 import com.laughing.microservice.dataprovider.entity.Transactions;
 import com.laughing.microservice.dataprovider.in.SingleMaritalVerifyIn;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,9 @@ public class TransactionsController extends BaseController {
     @Resource
     private ReqLogInfoDao ReqLogInfoDao;
 
+    @Resource
+    private SetConf SetConf;
+
     private final LogService logService;
 
 
@@ -47,7 +52,8 @@ public class TransactionsController extends BaseController {
 
     @GetMapping("/hello_world")
     public String selectById(HttpServletRequest request) {
-
+        System.out.println(SetConf.getServiceKey());
+        System.out.println(SetConf.getSm4Key());
         log.info("时间={}", System.currentTimeMillis());
 
         return "Hello World";
