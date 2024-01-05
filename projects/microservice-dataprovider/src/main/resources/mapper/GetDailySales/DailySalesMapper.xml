@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.davidfantasy.mybatisplustools.example.mapper.GetDailySales.DailySalesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.github.davidfantasy.mybatisplustools.example.entity.GetDailySales.DailySales">
+        <result column="product_id" property="productId" />
+        <result column="quantity_sold" property="quantitySold" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        product_id, quantity_sold
+    </sql>
+
+</mapper>
